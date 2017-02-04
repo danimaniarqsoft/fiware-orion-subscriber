@@ -36,6 +36,14 @@ public class Notification {
     public String id;
     public String text;
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public Notification(String text) {
         this.text = text;
     }
@@ -48,16 +56,4 @@ public class Notification {
         this.id = id;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Notification[id=%s, text='%s']", id, text);
-    }
 }

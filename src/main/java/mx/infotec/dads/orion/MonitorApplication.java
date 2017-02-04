@@ -23,9 +23,6 @@ public class MonitorApplication implements CommandLineRunner {
     @Override
     public void run(String... arg0) throws Exception {
         repository.deleteAll();
-        repository.save(new Notification("{json: notification}"));
-        repository.save(new Notification("{json: elements}"));
-
         for (Notification notification : repository.findAll()) {
             System.out.println(notification);
         }
