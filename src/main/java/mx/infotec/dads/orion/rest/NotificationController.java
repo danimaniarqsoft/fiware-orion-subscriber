@@ -67,4 +67,9 @@ public class NotificationController {
             return new ResponseEntity<List<Notification>>(dataStoreList, HttpStatus.OK);
         }
     }
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String homepage() {
+        return "index";
+    }
 }
