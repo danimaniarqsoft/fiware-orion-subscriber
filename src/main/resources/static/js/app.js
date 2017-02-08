@@ -9,6 +9,10 @@ app.config(function($routeProvider){
             templateUrl: '/views/notifications.html',
             controller: 'notificationController'
         })
+        .when('/table',{
+            templateUrl: '/views/table.html',
+            controller: 'tableController'
+        })
         .otherwise(
             { redirectTo: '/'}
         );
@@ -24,12 +28,10 @@ app.controller('MainCtrl', function($scope, Poller) {
 	app.factory('Poller', function($http, $timeout) {
 	  var data = { response: {}, calls: 0 };
 	  var poller = function() {
-	    $http.get('http://192.168.83.2:8080/notifications').then(function(r) {
+	    $http.get('http://consumer.dads.infotec.mx:8080/notifications').then(function(r) {
 	      data.response = r.data;
-	      data.calls++;
 	      $timeout(poller, 1000);
 	    });
-	    
 	  };
 	  poller();
 	  

@@ -34,18 +34,19 @@ import org.springframework.data.annotation.Id;
 public class Notification {
     @Id
     public String id;
-    public String text;
+    public OrionAlert orionAlert;
 
-    public String getText() {
-        return text;
+    
+    public Notification(OrionAlert orionAlert) {
+        this.orionAlert = orionAlert;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public OrionAlert getOrionAlert() {
+        return orionAlert;
     }
 
-    public Notification(String text) {
-        this.text = text;
+    public void setOrionAlert(OrionAlert orionAlert) {
+        this.orionAlert = orionAlert;
     }
 
     public String getId() {

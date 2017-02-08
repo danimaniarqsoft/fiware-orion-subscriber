@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import mx.infotec.dads.orion.model.Notification;
+import mx.infotec.dads.orion.model.OrionAlert;
 import mx.infotec.dads.orion.repository.NotificationRepository;
 
 /**
@@ -72,8 +73,8 @@ public class NotificationController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createNotification(@RequestBody String text, UriComponentsBuilder ucBuilder) {
-        Notification notification = repository.save(new Notification(text));
+    public ResponseEntity<Void> createNotification(@RequestBody OrionAlert orionAlert, UriComponentsBuilder ucBuilder) {
+        Notification notification = repository.save(new Notification(orionAlert));
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(notification.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
