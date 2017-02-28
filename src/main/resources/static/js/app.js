@@ -28,7 +28,7 @@ app.controller('MainCtrl', function($scope, Poller) {
 	app.factory('Poller', function($http, $timeout) {
 	  var data = { response: {}, calls: 0 };
 	  var poller = function() {
-	    $http.get('http://consumer.fiware.infotec.mx:8080/notifications').then(function(r) {
+	    $http.get('http://localhost:8080/notifications').then(function(r) {
 	      data.response = r.data;
 	      $timeout(poller, 1000);
 	    });
