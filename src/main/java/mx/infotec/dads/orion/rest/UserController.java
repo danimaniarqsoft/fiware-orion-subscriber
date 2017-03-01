@@ -28,18 +28,24 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import mx.infotec.dads.orion.IAuthenticationFacade;
+import mx.infotec.dads.orion.model.Notification;
 import mx.infotec.dads.orion.model.user.User;
+import mx.infotec.dads.orion.repository.NotificationRepository;
 import mx.infotec.dads.orion.repository.UserRepository;
+import mx.infotec.dads.orion.util.QueryUtil;
 
 /**
  * 
@@ -54,6 +60,12 @@ public class UserController {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private IAuthenticationFacade authenticationFacade;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     /**
      * GET ALL recupera todos los DataStore
@@ -71,12 +83,42 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/detail", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUserDetail() {
+        User user = QueryUtil.createByExampleUser();
+        user.setUsername(authenticationFacade.getAuthentication().getName());
+        user = repository.findOne(Example.of(user));
+        if (user == null) {
+            return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+        } else {
+            user.setAuthorities(null);
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+        user.setAuthorities(AuthorityUtils.createAuthorityList("USER"));
         User User = repository.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(User.getId()).toUri());
         System.out.println(User.getId());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    }
+
+    /**
+     * GET ALL Notifications user's assigned
+     * 
+     * @return List<DataStore>
+     */
+    @RequestMapping(value = "/notifications", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Notification>> getAllNotifications() {
+        List<Notification> dataStoreList = notificationRepository.findAll();
+        if (dataStoreList.isEmpty()) {
+            // Se podría regresar HttpStatus.NOT_FOUND
+            return new ResponseEntity<List<Notification>>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<List<Notification>>(dataStoreList, HttpStatus.OK);
+        }
     }
 }

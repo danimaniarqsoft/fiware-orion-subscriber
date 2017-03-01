@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute','ngResource']);
+var app = angular.module('app', ['ngRoute','ngResource']).constant("APP_URL", 'http://localhost:8080');
 app.config(function($routeProvider){
     $routeProvider
         .when('/dashboard',{
@@ -21,25 +21,3 @@ app.config(function($routeProvider){
             { redirectTo: '/'}
         );
 });
-
-app.controller('MainCtrl', function($scope, Poller) {
-	  $scope.name = 'World';
-	  $scope.data = Poller.data;
-	});
-	app.controller('StartCtrl',function(){});
-	app.run(function(Poller) {});
-
-	app.factory('Poller', function($http, $timeout) {
-	  var data = { response: {}, calls: 0 };
-	  var poller = function() {
-	    $http.get('http://localhost:8080/notifications').then(function(r) {
-	      data.response = r.data;
-	      $timeout(poller, 1000);
-	    });
-	  };
-	  poller();
-	  
-	  return {
-	    data: data
-	  };
-	});
