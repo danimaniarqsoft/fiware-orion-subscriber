@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import mx.infotec.dads.orion.model.User;
+import mx.infotec.dads.orion.model.user.User;
 import mx.infotec.dads.orion.repository.UserRepository;
 
 /**
@@ -47,7 +47,7 @@ import mx.infotec.dads.orion.repository.UserRepository;
  */
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/app/users")
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -73,13 +73,10 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
-        System.out.println(user.getEmail());
         User User = repository.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(User.getId()).toUri());
         System.out.println(User.getId());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-
     }
-
 }

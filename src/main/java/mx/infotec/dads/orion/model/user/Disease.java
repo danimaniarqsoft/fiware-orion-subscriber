@@ -21,18 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.orion.repository;
+package mx.infotec.dads.orion.model.user;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-
-import mx.infotec.dads.orion.model.user.User;
+import java.io.Serializable;
 
 /**
- * NotificationRepository
  * 
  * @author Daniel Cortes Pichardo
- *
+ * @since 1.0.0
+ * @version 1.0.0
  */
-public interface UserRepository extends MongoRepository<User, String> {
+public class Disease implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String id;
+    private String name;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package mx.infotec.dads.orion.model;
+package mx.infotec.dads.orion.model.user;
 
 import java.util.List;
 
@@ -40,10 +40,7 @@ public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     private String id;
-    private String email;
-    private String name;
-    private String firstName;
-    private String secondName;
+    private UserProfile userProfile;
 
     public User() {
     }
@@ -143,36 +140,11 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public UserProfile getUserProfile() {
+        return userProfile;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
 }

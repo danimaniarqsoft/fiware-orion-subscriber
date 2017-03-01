@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,10 +13,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,24 +22,31 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import mx.infotec.dads.orion.model.User;
-import mx.infotec.dads.orion.repository.NotificationRepository;
+import mx.infotec.dads.orion.model.user.User;
 import mx.infotec.dads.orion.repository.UserRepository;
+import mx.infotec.dads.orion.util.QueryUtil;
 
 @SpringBootApplication
 @EnableMongoRepositories
-public class MonitorApplication implements CommandLineRunner {
-
-    @Autowired
-    private NotificationRepository repository;
+@EnableConfigurationProperties
+public class MonitorApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(MonitorApplication.class, args);
     }
 
-    @Override
-    public void run(String... arg0) throws Exception {
-        repository.deleteAll();
+    @Bean
+    CommandLineRunner init(final UserRepository repository) {
+        return new CommandLineRunner() {
+            @Override
+            public void run(String... arg0) throws Exception {
+                repository.deleteAll();
+                User user = QueryUtil.createDefaulUserOne();
+                repository.save(user);
+                User userTwo = QueryUtil.createDefaulUserTwo();
+                repository.save(userTwo);
+            }
+        };
     }
 
     /**
@@ -63,50 +69,44 @@ public class MonitorApplication implements CommandLineRunner {
         bean.setOrder(0);
         return bean;
     }
+}
 
-    @Configuration
-    class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
+@Configuration
+class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
-        @Autowired
-        UserRepository usuarioRepository;
+    @Autowired
+    UserRepository usuarioRepository;
 
-        @Override
-        public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(userDetailsService());
-        }
+    @Override
+    public void init(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService());
+    }
 
-        @Bean
-        UserDetailsService userDetailsService() {
-            return new UserDetailsService() {
-                @Override
-                public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                    User user = new User();
-                    user.setEmail(username);
-                    user = usuarioRepository.findOne(Example.of(user));
-                    if (user!=null) {
-                        return new User(user.getPassword(),user.getUsername(), true, true, true, true,
-                                AuthorityUtils.createAuthorityList("USER"));
-                    } else {
-                        throw new UsernameNotFoundException("could not find the user '" + username + "'");
-                    }
+    @Bean
+    UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                User user = QueryUtil.createByExampleUser();
+                user.setUsername(username);
+                user = usuarioRepository.findOne(Example.of(user));
+                if (user != null) {
+                    return user;
+                } else {
+                    throw new UsernameNotFoundException("could not find the user '" + username + "'");
                 }
-            };
-        }
+            }
+        };
     }
+}
 
-    @EnableWebSecurity
-    @Configuration
-    class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().anyRequest().fullyAuthenticated().and().httpBasic().and().csrf().disable();
-            http.authorizeRequests().antMatchers("").anonymous();
-        }
+@EnableWebSecurity
+@Configuration
+class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        @Override
-        public void configure(WebSecurity web) throws Exception {
-            web.ignoring().antMatchers("/usuarios/login/**", "/usuarios/signup/**", "/perfiles/**");
-        }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/app/**").fullyAuthenticated().and().httpBasic().and().csrf().disable();
+        http.authorizeRequests().antMatchers("/").permitAll();
     }
-
 }
