@@ -107,8 +107,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/notifications").permitAll()
+                .antMatchers("/notifications","/logout").permitAll()
                 .anyRequest().authenticated();
+        
         http.authorizeRequests()
                 .antMatchers("/app/**")
                 .fullyAuthenticated()

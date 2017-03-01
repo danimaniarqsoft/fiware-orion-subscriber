@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngRoute','ngResource']).constant("APP_URL", 'http://localhost:8080');
+var app = angular.module('app', ['ngRoute','ngResource']).constant("APP_URL", 'http://207.249.127.180:8080');
 app.config(function($routeProvider){
     $routeProvider
         .when('/dashboard',{
@@ -17,7 +17,15 @@ app.config(function($routeProvider){
             templateUrl: '/views/user.html',
             controller: 'userController'
         })
+        .when('/newUser',{
+            templateUrl: '/views/newUser.html',
+            controller: 'createUserController'
+        })
+        .when('/home',{
+            templateUrl: '/views/home.html',
+            controller: 'homeController'
+        })
         .otherwise(
-            { redirectTo: '/'}
+            { redirectTo: '/home'}
         );
 });

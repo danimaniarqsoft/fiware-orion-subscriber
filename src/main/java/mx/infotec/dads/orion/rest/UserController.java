@@ -121,4 +121,11 @@ public class UserController {
             return new ResponseEntity<List<Notification>>(dataStoreList, HttpStatus.OK);
         }
     }
+
+    @RequestMapping(value = "/newUser", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getNewUser() {
+        User user = QueryUtil.createUserTemplate();
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
 }

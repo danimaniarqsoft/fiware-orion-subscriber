@@ -54,6 +54,30 @@ public class QueryUtil {
         return createByExampleUser(new String[] {});
     }
 
+    public static User createUserTemplate(){
+        User user = createByExampleUser();
+        user.setUsername("");
+        user.setPassword("");
+        UserProfile up = new UserProfile();
+        up.setBirthdate("");
+        up.setFamilyName("");
+        up.setName("");
+        up.setEmail("");
+        up.setGender("");
+        Address address = new Address();
+        address.setAddresCountry("");
+        address.setAddressLocality("");
+        address.setAddressRegion("");
+        address.setPostalCode("");
+        address.setStreet("");
+        up.setAddress(address);
+        HealthProfile hp = new HealthProfile();
+        hp.setHealthstate("");
+        hp.setDiseases(new ArrayList<>());
+        up.setHealthProfile(hp);
+        user.setUserProfile(up);
+        return user;
+    }
     public static User createDefaulUserOne() {
         User user = new User(null, null, true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
         user.setUsername("blanca.vazquez");

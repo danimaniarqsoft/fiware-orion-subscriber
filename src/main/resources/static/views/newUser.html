@@ -1,10 +1,10 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8">
-			<form ng-submit="submit()" ng-controller="userController">
+			<form ng-submit="submit()" ng-controller="createUserController">
 				<div class="card">
 					<div class="card-header" data-background-color="green">
-						<h4 class="title">User Profile</h4>
+						<h4 class="title">Create User Profile</h4>
 						<p class="category">General Information</p>
 					</div>
 					<div class="card-content">
@@ -37,8 +37,13 @@
 							<div class="col-md-5">
 								<div class="form-group label-floating">
 									<label class="control-label">Username</label> <input
-										type="text" class="form-control" ng-model="user.username"
-										disabled>
+										type="text" class="form-control" ng-model="user.username">
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form-group label-floating">
+									<label class="control-label">Password</label> <input
+										type="password" class="form-control" ng-model="user.password">
 								</div>
 							</div>
 							<div class="col-md-3">

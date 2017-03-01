@@ -9,9 +9,25 @@ app.controller('notificationController', function($scope, $http, APP_URL) {
 });
 
 app.controller('tableController', function($scope, $http, APP_URL) {});
+app.controller('logoutController', function($scope, $http, APP_URL) {
+	$scope.logoutinfo = "nothing";
+
+	$scope.logout = function() {
+		$http.defaults.headers.common.Authorization = '';
+		$http.get(APP_URL + '/logout').then(function(response) {
+			demo.showNotification('bottom', 'center', '<p><b>SUCCESS:</b></p> The user have been logged out successfully!', 2, 'check');
+		}, function(response) {
+			demo.showNotification('bottom', 'center', '<p><b>ERROR:</b></p> Something is wrong, please try to verify the information provided', 4, 'error_outline');
+		});
+	};
+});
 app.controller('userController', function($scope, $http, APP_URL) {
 	$scope.list = [];
 	$scope.info = 'info';
+	$scope.diseaseEdit = {
+		"id" : "",
+		"name" : ""
+	}
 	$scope.submit = function() {
 		$scope.info = $scope.user;
 		$http.post(APP_URL + '/app/users', $scope.user).then(function(response) {
@@ -20,10 +36,56 @@ app.controller('userController', function($scope, $http, APP_URL) {
 			demo.showNotification('bottom', 'center', '<p><b>ERROR:</b></p> Something is wrong, please try to verify the information provided', 4, 'error_outline');
 		});
 	};
+	$scope.addDiseases = function() {
+		newDisease = {
+			"id" : $scope.diseaseEdit.id,
+			"name" : $scope.diseaseEdit.name
+		}
+		$scope.diseaseEdit.id = '';
+		$scope.diseaseEdit.name = '';
+		$scope.user.userProfile.healthProfile.diseases.push(newDisease);
+	};
+	$scope.removeDiseases = function(index) {
+		$scope.user.userProfile.healthProfile.diseases.splice(index, 1);
+	};
+
 	$http.get(APP_URL + '/app/users/detail').then(function(response) {
 		$scope.user = response.data;
-		$scope.list.push('hola');
 	});
+});
+
+app.controller('createUserController', function($scope, $http, APP_URL) {
+	$scope.list = [];
+	$scope.info = 'info';
+	$scope.diseaseEdit = {
+		"id" : "",
+		"name" : ""
+	}
+	$scope.submit = function() {
+		$scope.info = $scope.user;
+		$http.post(APP_URL + '/app/users', $scope.user).then(function(response) {
+			demo.showNotification('bottom', 'center', '<p><b>SUCCESS:</b></p> The user have been updated successfully!', 2, 'check');
+		}, function(response) {
+			demo.showNotification('bottom', 'center', '<p><b>ERROR:</b></p> Something is wrong, please try to verify the information provided', 4, 'error_outline');
+		});
+	};
+	$scope.addDiseases = function() {
+		newDisease = {
+			"id" : $scope.diseaseEdit.id,
+			"name" : $scope.diseaseEdit.name
+		}
+		$scope.diseaseEdit.id = '';
+		$scope.diseaseEdit.name = '';
+		$scope.user.userProfile.healthProfile.diseases.push(newDisease);
+	};
+	$scope.removeDiseases = function(index) {
+		$scope.user.userProfile.healthProfile.diseases.splice(index, 1);
+	};
+
+	$http.get(APP_URL + '/app/users/newUser').then(function(response) {
+		$scope.user = response.data;
+	});
+
 });
 
 app.controller('Hello', function($scope, $http) {
