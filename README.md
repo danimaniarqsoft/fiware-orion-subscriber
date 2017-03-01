@@ -24,6 +24,8 @@ https://spring.io/guides/gs/consuming-rest-angularjs/
 }
 ```
 
+http://jasonwatmore.com/post/2014/05/26/angularjs-basic-http-authentication-example
+
 schema to pojo
 
 http://www.jsonschema2pojo.org/
