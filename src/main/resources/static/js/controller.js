@@ -8,10 +8,30 @@ app.controller('notificationController', function($scope, $http, APP_URL) {
 	});
 });
 
+
+app.controller('mapController', function($scope, $http, APP_URL) {
+	$().ready(function(){
+        demo.initGoogleMaps();
+    });
+});
+
+
+app.controller('notificationDeleteController', function($scope, $http, APP_URL) {
+	$scope.deleteAll = function() {
+		$http({
+			method : 'DELETE',
+			url : APP_URL + '/notifications'
+		}).then(function successCallback(response) {
+			demo.showNotification('bottom', 'center', '<p><b>SUCCESS:</b></p> All the notifications have been deleted', 2, 'check');
+		}, function errorCallback(response) {
+			demo.showNotification('bottom', 'center', '<p><b>ERROR:</b></p> Something is wrong, please try to verify the information provided', 4, 'error_outline');
+		});
+	};
+});
+
 app.controller('tableController', function($scope, $http, APP_URL) {});
 app.controller('logoutController', function($scope, $http, APP_URL) {
 	$scope.logoutinfo = "nothing";
-
 	$scope.logout = function() {
 		$http.defaults.headers.common.Authorization = '';
 		$http.get(APP_URL + '/logout').then(function(response) {
@@ -95,7 +115,27 @@ app.controller('Hello', function($scope, $http) {
 		});
 });
 
+app.controller('countController', function($scope, CountPoller){
+	$scope.report = CountPoller.data;
+});
+app.run(function(CountPoller) {});
+app.factory('CountPoller', function($http, $timeout, APP_URL) {
+	var data = {
+		response : {},
+		calls : 0
+	};
+	var poller = function() {
+		$http.get(APP_URL + '/notifications/count').then(function(r) {
+			data.response = r.data;
+			$timeout(poller, 1000);
+		});
+	};
+	poller();
 
+	return {
+		data : data
+	};
+});
 app.controller('MainCtrl', function($scope, Poller) {
 	$scope.name = 'World';
 	$scope.data = Poller.data;

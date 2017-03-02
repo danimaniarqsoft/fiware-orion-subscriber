@@ -17,6 +17,10 @@ app.config(function($routeProvider){
             templateUrl: '/views/user.html',
             controller: 'userController'
         })
+        .when('/map',{
+            templateUrl: '/views/map.html',
+            controller: 'mapController'
+        })
         .when('/newUser',{
             templateUrl: '/views/newUser.html',
             controller: 'createUserController'

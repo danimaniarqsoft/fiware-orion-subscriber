@@ -32,17 +32,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import mx.infotec.dads.orion.IAuthenticationFacade;
 import mx.infotec.dads.orion.model.Notification;
 import mx.infotec.dads.orion.model.OrionAlert;
 import mx.infotec.dads.orion.repository.NotificationRepository;
+import mx.infotec.dads.orion.util.Report;
 
 /**
  * 
@@ -57,8 +56,6 @@ public class NotificationController {
 
     @Autowired
     private NotificationRepository repository;
-
-
 
     /**
      * GET ALL recupera todos los DataStore
@@ -95,6 +92,27 @@ public class NotificationController {
         headers.setLocation(ucBuilder.path("/{id}").buildAndExpand(notification.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 
+    }
+
+    /**
+     * GET ALL recupera todos los DataStore
+     * 
+     * @return List<DataStore>
+     */
+    @RequestMapping(value = "/count", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Report> getLastNotification() {
+        return new ResponseEntity<Report>(new Report(repository.count()), HttpStatus.OK);
+    }
+
+    /**
+     * DELETE ALL
+     * 
+     * @return ResponseEntity
+     */
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<Notification> deleteAllNotification() {
+        repository.deleteAll();
+        return new ResponseEntity<Notification>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

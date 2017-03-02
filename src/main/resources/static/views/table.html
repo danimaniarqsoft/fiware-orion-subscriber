@@ -6,19 +6,40 @@
 					<h4 class="title">Orion Context Notifications</h4>
 					<p class="category">Show all orion context notifications</p>
 				</div>
+				<div ng-controller="notificationDeleteController"
+					class="card-content">
+					<button type="button" ng-click='deleteAll()' id="removeAlld"
+						class="btn btn-primary pull-right">Remove All</button>
+				</div>
 				<div class="card-content table-responsive">
 					<table class="table">
 						<thead class="text-primary">
-							<th>Mongo DB - ID</th>
-							<th>Notification Content</th>
+							<th>Orion Id</th>
+							<th>Orion Type</th>
+							<th>latitud</th>
+							<th>longitud</th>
+							<th>name</th>
+							<th>o3</th>
 						</thead>
 						<tbody>
 							<tr ng-repeat="notification in data.response">
 								<td>
-									<p class="text-success">{{notification.id}}</p>
+									<p class="text-muted">{{notification.orionId}}</p>
 								</td>
 								<td>
-								<p class="text-muted">{{notification.orionAlert | json}}</p>
+									<p class="text-muted">{{notification.type}}</p>
+								</td>
+								<td>
+									<p class="text-muted">{{notification.latitud}}</p>
+								</td>
+								<td>
+									<p class="text-muted">{{notification.longitud}}</p>
+								</td>
+								<td>
+									<p class="text-muted">{{notification.name}}</p>
+								</td>
+								<td>
+									<p class="{{notification.severityMessage.textClass}}">{{notification.o3}}</p>
 								</td>
 							</tr>
 						</tbody>
