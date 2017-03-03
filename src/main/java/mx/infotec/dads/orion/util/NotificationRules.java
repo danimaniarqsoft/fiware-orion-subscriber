@@ -36,14 +36,16 @@ public class NotificationRules {
     }
 
     public static SeverityMessage levelOfSeverity(int co3) {
-        if (co3 <= 50) {
-            return new SeverityMessage("alert alert-success", "text-success", "Very Low", "The level is Good");
+        if (co3 < 50) {
+            return new SeverityMessage("alert alert-success", "text-success", "Good", "The level is Good");
         } else if ((51 <= co3) && (co3 <= 100)) {
-            return new SeverityMessage("alert alert-info", "text-info", "Low", "It is Acceptable");
-        } else if ((101 < co3) && (co3 < 150)) {
-            return new SeverityMessage("alert alert-warning", "text-warning", "High", "The level is bad");
-        } else {
-            return new SeverityMessage("alert alert-danger", "text-danger", "Danger", "The level is very bad");
+            return new SeverityMessage("alert alert-warning", "text-warning", "Regular", "It is Acceptable");
+        } else if ((101 <= co3) && (co3 <= 150)) {
+            return new SeverityMessage("alert alert-orange", "text-orange", "Bad", "The level is bad");
+        } else if((151 <= co3) && (co3 <= 200)){
+            return new SeverityMessage("alert alert-danger", "text-danger", "Very Bad", "The level is very bad");
+        }else{
+            return new SeverityMessage("alert alert-primary", "text-primary", "Extremely Bad", "The level is Extremely bad");
         }
     }
 }
