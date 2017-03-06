@@ -6,6 +6,9 @@
 					<h4 class="title">Orion Context Notifications</h4>
 					<p class="category">Show all orion context notifications</p>
 				</div>
+				<div class="card-content">
+				<img alt="" src="/assets/img/semaforo.png"style="width: 50%; height: 50%" >
+				</div>
 				<div ng-controller="notificationDeleteController"
 					class="card-content">
 					<button type="button" ng-click='deleteAll()' id="removeAlld"
@@ -16,10 +19,10 @@
 						<thead class="text-primary">
 							<th>Orion Id</th>
 							<th>Orion Type</th>
-							<th>latitud</th>
-							<th>longitud</th>
-							<th>name</th>
-							<th>o3</th>
+							<th>Latitud</th>
+							<th>Longitud</th>
+							<th>Name</th>
+							<th>O3</th>
 						</thead>
 						<tbody>
 							<tr ng-repeat="notification in data.response">
