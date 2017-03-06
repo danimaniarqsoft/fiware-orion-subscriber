@@ -1,12 +1,12 @@
 <div class="card">
 	<div class="card-header" data-background-color="green">
 		<h4 class="title">Air quality notifications</h4>
-		<p class="category">
-			You Have the next <a target="_blank"
-				href="https://fiware-orion.readthedocs.io/en/master/index.html">Notifications</a>
-			from the <a href="#"
-				target="_blank">Orion Context Broker</a>
-		</p>
+		<p class="category">You Have the next Notifications from the Orion
+			Context Broker</p>
+	</div>
+	<div class="card-content">
+		<img alt="" src="/assets/img/semaforo.jpg"
+			style="width: 30%; height: 30%">
 	</div>
 	<div ng-controller="notificationDeleteController" class="card-content">
 		<button type="button" ng-click='deleteAll()' id="removeAlld"
@@ -17,10 +17,12 @@
 			<div class="col-md-6">
 				<h5>Notifications</h5>
 				<div ng-repeat="notification in data.response"
-					class="{{notification.severityMessage.divClass}} alert-with-icon" data-notify="container">
+					class="{{notification.severityMessage.divClass}} alert-with-icon"
+					data-notify="container">
 					<button type="button" aria-hidden="true" class="close">×</button>
 					<i data-notify="icon" class="material-icons">add_alert</i> <span
-						data-notify="message"><b>{{notification.severityMessage.level}} - </b>{{notification.severityMessage.message}} - (O3 value is =<b>{{notification.o3}})</b></span>
+						data-notify="message"><b>{{notification.severityMessage.level}}
+							- </b>{{notification.severityMessage.message}} - (O3 value is =<b>{{notification.o3}})</b></span>
 				</div>
 			</div>
 		</div>
