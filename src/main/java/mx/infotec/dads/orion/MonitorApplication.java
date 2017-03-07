@@ -45,6 +45,8 @@ public class MonitorApplication {
                 repository.save(user);
                 User userTwo = QueryUtil.createDefaulUserTwo();
                 repository.save(userTwo);
+                User userThree = QueryUtil.createDefaulUserThree();
+                repository.save(userThree);
             }
         };
     }

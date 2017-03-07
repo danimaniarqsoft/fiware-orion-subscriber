@@ -54,7 +54,7 @@ public class QueryUtil {
         return createByExampleUser(new String[] {});
     }
 
-    public static User createUserTemplate(){
+    public static User createUserTemplate() {
         User user = createByExampleUser();
         user.setUsername("");
         user.setPassword("");
@@ -78,6 +78,7 @@ public class QueryUtil {
         user.setUserProfile(up);
         return user;
     }
+
     public static User createDefaulUserOne() {
         User user = new User(null, null, true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
         user.setUsername("blanca.vazquez");
@@ -118,6 +119,36 @@ public class QueryUtil {
         up.setName("Karen Mariel");
         up.setEmail("karen.najera@infotec.mx");
         up.setGender("Female");
+        Address address = new Address();
+        address.setAddresCountry("México");
+        address.setAddressLocality("Ciudad de México");
+        address.setAddressRegion("Tlalpan");
+        address.setPostalCode("02346");
+        address.setStreet("Av. Tlalpan");
+        up.setAddress(address);
+        HealthProfile hp = new HealthProfile();
+        hp.setHealthstate("Good");
+        List<Disease> diseases = new ArrayList<>();
+        Disease disease = new Disease();
+        disease.setId("HD");
+        disease.setName("Heart Disease");
+        diseases.add(disease);
+        hp.setDiseases(diseases);
+        up.setHealthProfile(hp);
+        user.setUserProfile(up);
+        return user;
+    }
+
+    public static User createDefaulUserThree() {
+        User user = new User(null, null, true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
+        user.setUsername("hugo.estrada");
+        user.setPassword("hugo.estrada");
+        UserProfile up = new UserProfile();
+        up.setBirthdate("12/07/1996");
+        up.setFamilyName("Estrada Esquivel");
+        up.setName("Hugo");
+        up.setEmail("karen.najera@infotec.mx");
+        up.setGender("Male");
         Address address = new Address();
         address.setAddresCountry("México");
         address.setAddressLocality("Ciudad de México");
